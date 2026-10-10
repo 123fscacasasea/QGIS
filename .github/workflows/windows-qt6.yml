@@ -14,6 +14,7 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
+  contents: write
   packages: write
 
 jobs:
@@ -156,6 +157,13 @@ jobs:
           archive: false
           path: |
             build/*-win64.zip
+
+      - name: Upload release assets
+        uses: AButler/upload-release-assets@34491005a5d7ec239a784e460807ce844fde7962 # v4.0.0
+        if: ${{ github.event_name == 'release' }}
+        with:
+          files: 'build/*-win64.zip'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
 
 
       - name: Schedule download comment
